@@ -1,5 +1,3 @@
-
-````markdown
 # passman-cli
 
 A simple, terminal-based password manager written in Rust. Store, retrieve, and manage your account credentials safely.
@@ -17,7 +15,7 @@ A simple, terminal-based password manager written in Rust. Store, retrieve, and 
 1. Make sure you have [Rust](https://www.rust-lang.org/tools/install) installed.
 2. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/passman-cli.git
+   git clone https://github.com/aliadelharrat/passman-cli.git
    cd passman-cli
 ````
 
@@ -31,19 +29,19 @@ A simple, terminal-based password manager written in Rust. Store, retrieve, and 
 
 ```bash
 # Show help
-./target/release/passman help
+./target/release/passman-cli help
 
 # Add a new account
-./target/release/passman add
+./target/release/passman-cli add
 
 # List all accounts
-./target/release/passman list
+./target/release/passman-cli list
 
 # Get account info
-./target/release/passman get
+./target/release/passman-cli get
 
 # Delete an account
-./target/release/passman delete
+./target/release/passman-cli delete
 ```
 
 ## License
