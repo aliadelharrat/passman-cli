@@ -1,4 +1,3 @@
-Here’s a simple README you can use for your project:
 
 ````markdown
 # passman-cli
