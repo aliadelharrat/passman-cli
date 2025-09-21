@@ -14,15 +14,15 @@ A simple, terminal-based password manager written in Rust. Store, retrieve, and 
 
 1. Make sure you have [Rust](https://www.rust-lang.org/tools/install) installed.
 2. Clone the repository:
-   ```bash
+ ```bash
    git clone https://github.com/aliadelharrat/passman-cli.git
    cd passman-cli
-````
+```
 
 3. Build the project:
-   ```bash
+```bash
    cargo build --release
-````
+```
 
 
 ## Usage
