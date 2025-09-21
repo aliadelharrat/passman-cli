@@ -20,8 +20,7 @@ A simple, terminal-based password manager written in Rust. Store, retrieve, and 
 ````
 
 3. Build the project:
-
-````bash
+   ```bash
    cargo build --release
 ````
 
