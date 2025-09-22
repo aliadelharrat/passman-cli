@@ -1,4 +1,3 @@
-// TODO: drop the repo link here: https://www.youtube.com/watch?v=o73-LFFkZEk
 use arboard::Clipboard;
 use rand::{Rng, rng, seq::SliceRandom};
 use serde::{Deserialize, Serialize};
@@ -38,11 +37,11 @@ fn main() {
     }
 
     match user_command.to_lowercase().as_str() {
-        "help" => show_help(),                     // DONE
-        "add" => add_account(database_path),       // DONE
-        "list" => list_accounts(database_path),    // DONE
-        "get" => get_account(database_path),       // DONE
-        "delete" => delete_account(database_path), // ONGOING...
+        "help" => show_help(),
+        "add" => add_account(database_path),
+        "list" => list_accounts(database_path),
+        "get" => get_account(database_path),
+        "delete" => delete_account(database_path),
         not_found => eprintln!(
             "Unknown command: {}. Use 'help' to see available commands.",
             not_found
@@ -71,11 +70,10 @@ fn add_account(database_path: &str) {
     let username = prompt_user_input("Enter username:");
     let email = prompt_user_input("Enter email:");
 
-    let password: String;
-    match prompt_yes_no("Generate password? [y/n]:") {
-        true => password = generate_random_password(),
-        false => password = prompt_user_input("Please enter your password:"),
-    }
+    let password = match prompt_yes_no("Generate password? [y/n]:") {
+        true => generate_random_password(),
+        false => prompt_user_input("Please enter your password:"),
+    };
 
     let entry = AccountEntry {
         account,
@@ -91,7 +89,7 @@ fn add_account(database_path: &str) {
 
 fn list_accounts(database_path: &str) {
     let accounts = load_database(database_path);
-    if accounts.len() > 0 {
+    if !accounts.is_empty() {
         let table = Table::new(accounts);
         println!("{table}");
     } else {
@@ -130,7 +128,7 @@ fn get_account(database_path: &str) {
 
 fn delete_account(database_path: &str) {
     let mut accounts = load_database(database_path);
-    if accounts.len() <= 0 {
+    if accounts.is_empty() {
         println!("No accounts available to delete.");
         exit(0);
     }
@@ -155,7 +153,7 @@ fn delete_account(database_path: &str) {
 // Utility functions
 
 fn prompt_user_input(prompt: &str) -> String {
-    if prompt.len() > 0 {
+    if !prompt.is_empty() {
         println!("{prompt}");
     }
     let mut input_buffer = String::new();
@@ -165,11 +163,7 @@ fn prompt_user_input(prompt: &str) -> String {
 
 fn prompt_yes_no(prompt_message: &str) -> bool {
     let user_choice = prompt_user_input(prompt_message);
-    match user_choice.trim().to_lowercase().as_str() {
-        "y" => return true,
-        "n" => return false,
-        _ => return false,
-    }
+    matches!(user_choice.trim().to_lowercase().as_str(), "y")
 }
 
 fn generate_random_password() -> String {
@@ -195,44 +189,39 @@ fn generate_random_password() -> String {
     let mut password_vec: Vec<char> = password.chars().collect();
     password_vec.shuffle(&mut rng());
     password = password_vec.iter().collect();
-
     password
 }
 
 fn get_random_lowercase() -> char {
     let pool_lowercase = "abcdefghijklmnopqrstuvwxyz";
-    let random_lowercase = pool_lowercase
+    pool_lowercase
         .chars()
         .nth(rand::rng().random_range(0..pool_lowercase.len()))
-        .unwrap();
-    random_lowercase
+        .unwrap()
 }
 
 fn get_random_uppercase() -> char {
     let pool_uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    let random_uppercase = pool_uppercase
+    pool_uppercase
         .chars()
         .nth(rand::rng().random_range(0..pool_uppercase.len()))
-        .unwrap();
-    random_uppercase
+        .unwrap()
 }
 
 fn get_random_number() -> char {
     let pool_numbers = "0123456789";
-    let random_number = pool_numbers
+    pool_numbers
         .chars()
         .nth(rand::rng().random_range(0..pool_numbers.len()))
-        .unwrap();
-    random_number
+        .unwrap()
 }
 
 fn get_random_symbol() -> char {
     let pool_symbols = "!@#$%^&*()-_=+[]{};:,.<>?";
-    let random_symbol = pool_symbols
+    pool_symbols
         .chars()
         .nth(rand::rng().random_range(0..pool_symbols.len()))
-        .unwrap();
-    random_symbol
+        .unwrap()
 }
 
 fn load_database(database_path: &str) -> Vec<AccountEntry> {
@@ -242,7 +231,7 @@ fn load_database(database_path: &str) -> Vec<AccountEntry> {
 }
 
 fn copy_to_clipboard(password_text: String) {
-    let _ = thread::spawn(move || {
+    thread::spawn(move || {
         let mut clipboard = Clipboard::new().unwrap();
         clipboard.set_text(password_text).unwrap();
         println!("Password copied to clipboard!");
@@ -255,7 +244,7 @@ fn copy_to_clipboard(password_text: String) {
 fn save_database_file(database_path: &str, accounts: Vec<AccountEntry>, prompt_message: &str) {
     let accounts_json = serde_json::to_string(&accounts).unwrap();
     fs::write(database_path, accounts_json).unwrap();
-    if prompt_message.len() > 0 {
+    if !prompt_message.is_empty() {
         println!("{prompt_message}");
     }
 }
